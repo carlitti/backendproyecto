@@ -1,17 +1,20 @@
 const express = require("express");
-const { createProducto, getProductos } = require("../models/productModel");
+const { createProducto, getProductos, getProductById } = require("../models/productModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
-        const productos = await getProductos();
-        res.json(productos);
+        const { id } = req.params;
+        const producto = await getProductById(id); // 🔥 Ahora está definido
+        if (!producto) return res.status(404).json({ error: "Producto no encontrado" });
+
+        res.json(producto);
     } catch (error) {
-        console.error("❌ Error al obtener productos:", error);
-        res.status(500).json({ error: "Error al obtener productos" });
+        console.error("❌ Error al obtener producto:", error);
+        res.status(500).json({ error: "Error al obtener producto" });
     }
 });
 

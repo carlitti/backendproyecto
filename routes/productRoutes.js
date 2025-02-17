@@ -18,16 +18,13 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        const { id } = req.params;
-        const producto = await getProductById(id);
-        if (!producto) return res.status(404).json({ error: "Producto no encontrado" });
-
-        res.json(producto);
+        const productos = await getProductos();
+        res.json(productos);
     } catch (error) {
-        console.error("❌ Error al obtener producto:", error);
-        res.status(500).json({ error: "Error al obtener producto" });
+        console.error("❌ Error al obtener productos:", error);
+        res.status(500).json({ error: "Error al obtener productos" });
     }
 });
 
